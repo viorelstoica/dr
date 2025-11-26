@@ -40,6 +40,9 @@ app.get('/output/stats', async (req, res, next) => {
         recF.suc = recF.suc + d.suc
       }
     })
+    ret.forEach(r => {
+      r.per = (100 - r.err/(r.suc + r.err)).toFixed(2)
+    })
     res.status(200).send(ret)
 })
 

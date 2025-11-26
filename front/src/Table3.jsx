@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Atom } from 'react-loading-indicators'
 import './App.css';
 
 export default function Table3() {
@@ -17,11 +18,19 @@ export default function Table3() {
   }, []);
 
   if (loading) {
-    return null
+    return (
+      <div className="card mb-5">
+        <div className="card-header">
+          <h5 className="mb-0"><i className="fas fa-list me-2"></i>Detailed Statistics</h5>
+        </div>
+        <div className="card-body" style={{width: '100%'}}>
+          <Atom color="#32cd32" size="medium" text="" textColor="" />
+        </div>
+      </div>
+    )
   }
   else {
     return (
-
       <div className="card mb-5">
         <div className="card-header">
           <h5 className="mb-0"><i className="fas fa-list me-2"></i>Detailed Statistics</h5>
@@ -38,14 +47,14 @@ export default function Table3() {
                 </tr>
               </thead>
               <tbody>
-              {data.map(d => (
-                <tr className="table-light">
-                  <td className="fw-bold text-secondary">{d.folder}</td>
-                  <td className="text-end fw-bold">{d.suc}</td>
-                  <td className="text-end fw-bold">{d.err}</td>
-                  <td className="text-end text-success fw-bold">{100-100*d.err/d.suc}%</td>
-                </tr>
-              ))}
+                {data.map(d => (
+                  <tr className="table-light">
+                    <td className="fw-bold text-secondary">{d.folder}</td>
+                    <td className="text-end fw-bold">{d.suc}</td>
+                    <td className="text-end fw-bold">{d.err}</td>
+                    <td className="text-end text-success fw-bold">{d.per}%</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
