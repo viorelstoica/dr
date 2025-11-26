@@ -1,5 +1,5 @@
 import express from 'express'
-import { getFile, outputProcessedStats } from './read.js'
+import { getFile, outputProcessedStats, outputProcessedStats2 } from './read.js'
 import cors from 'cors'
 import random from 'random-name'
 
@@ -41,10 +41,20 @@ app.get('/output/stats', async (req, res, next) => {
       }
     })
     ret.forEach(r => {
-      r.per = (100 - r.err/(r.suc + r.err)).toFixed(2)
+      r.per = (100 - 100 * r.err/(r.suc + r.err)).toFixed(2)
     })
     res.status(200).send(ret)
 })
+
+app.get('/output/stats2', async (req, res, next) => {
+    const data = await outputProcessedStats2()
+    data.forEach(r => {
+      r.per = (100 - 100 * r.err/(r.suc + r.err)).toFixed(2)
+    })
+    res.status(200).send(data)
+})
+
+
 
 const port = process.env.PORT || 3000
 const server = app.listen(port, async () => {

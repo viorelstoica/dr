@@ -1,4 +1,4 @@
-import { getFile, o, outputProcessedStats } from './read.js'
+import { getFile, o, outputProcessedStats, outputProcessedStats2 } from './read.js'
 
 async function test1() {
     var data = await getFile('file')
@@ -6,11 +6,8 @@ async function test1() {
 }
 
 async function test2() {
-    const data = await outputProcessedStats()
-    data.forEach(d => {
-        if(d.error > 0)
-            console.log(d)
-    })
+    const data = await outputProcessedStats2()
+    console.log(data)
 }
 
 async function test3() {

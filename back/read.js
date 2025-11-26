@@ -18,14 +18,14 @@ export async function outputProcessedStats() {
   folders.forEach(async (fo) => {
     var files = fs.readdirSync(`../data/static/output_processed/${fo}`)
     files.forEach(fi => {
-      promises.push(scanSingleFile(fo, fi))
+      promises.push(scanSucErr(fo, fi))
     })
   })
   const ret = await Promise.all(promises)
   return ret
 }
 
-function scanSingleFile(fo, fi) {
+function scanSucErr(fo, fi) {
   const fileName = `../data/static/output_processed/${fo}/${fi}`
   return new Promise((resolve) => {
     var cnt = 0, suc = 0, err = 0
@@ -35,17 +35,75 @@ function scanSingleFile(fo, fi) {
 
     lineReader.on('line', function (line) {
       cnt = cnt + 1
-      if(line.startsWith("SUC"))
+      if (line.startsWith("SUC"))
         suc = suc + 1
-      if(line.startsWith("ERR"))
+      if (line.startsWith("ERR"))
         err = err + 1
     });
 
     lineReader.on('close', function () {
-      resolve({folder: fo, file: fi, cnt: cnt, suc: suc, err: err})
+      resolve({ folder: fo, file: fi, cnt: cnt, suc: suc, err: err })
     });
   })
 }
+
+
+
+export async function outputProcessedStats2() {
+  const promises = []
+  var folders = fs.readdirSync('../data/static/output_processed')
+  folders.forEach(async (fo) => {
+    var files = fs.readdirSync(`../data/static/output_processed/${fo}`)
+    files.forEach(fi => {
+      promises.push(scanCmdSucErr(fo, fi))
+    })
+  })
+  const ret = await Promise.all(promises)
+  var ret2 = []
+  ret.forEach(p => {
+    p.forEach(r => {
+      var elm = ret2.find(v => v.cmd === r.cmd)
+      if (elm != undefined) {
+        elm.suc = elm.suc + r.suc
+        elm.err = elm.err + r.err
+      }
+      else {
+        ret2.push(r)
+      }
+    })
+  })
+  return ret2
+}
+
+function scanCmdSucErr(fo, fi) {
+  const fileName = `../data/static/output_processed/${fo}/${fi}`
+  return new Promise((resolve) => {
+    var ret = []
+    var currRet
+    var lineReader = readline.createInterface({
+      input: fs.createReadStream(fileName)
+    });
+
+    lineReader.on('line', function (line) {
+      if (line.startsWith("CMD")) {
+        currRet = ret.find((el) => el.cmd === line.substring(4))
+        if (currRet == undefined) {
+          currRet = ret[ret.push({ cmd: line.substring(4), suc: 0, err: 0 }) - 1]
+        }
+      }
+      if (line.startsWith("SUC"))
+        currRet.suc = currRet.suc + 1
+      if (line.startsWith("ERR"))
+        currRet.err = currRet.err + 1
+    });
+
+    lineReader.on('close', function () {
+      resolve(ret)
+    });
+  })
+}
+
+
 
 function onP(m, tm) {
   return new Promise((resolve) => {
