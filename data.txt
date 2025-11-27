@@ -1,0 +1,40 @@
+static:
+	how to extract TTI data:
+		there are two files: single and batch
+		tar xvf static/20251022_123737_072_tti_files.tar.gz --strip-components 5 -C x
+	output processed:
+		SEC.ACC.MASTER
+		PARAMETERS
+		CURRENCY
+		DAO
+		CUSTOMER
+		ACCOUNT
+		INTEREST
+		SECURITY.MASTER
+		DX.CONTRACT.MASTER
+		PRICES
+		FD.GROUP.PAYMENT
+	wealth-migration ?
+	gwpack full log
+	logs static
+	prices
+	
+
+logs/2025-11-25
+├── import
+├── output_processed
+├── trace
+│   ├── AAAFlow
+│   ├── AA_instruments_operations
+│   ├── CorporateAction
+│   ├── Customer_Portfolio_CashAccount
+│   ├── F2B
+│   ├── FinancialInstruments
+│   ├── FinancialInstrumentsContract
+│   ├── Infra
+│   ├── Miscellaneous
+│   ├── Operations
+│   └── zzz
+└── xml
+
+		

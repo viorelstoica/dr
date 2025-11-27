@@ -1,4 +1,4 @@
-import { getFile, o, outputProcessedStats, outputProcessedStats2 } from './read.js'
+import { getFile, o, outputProcessedStats, outputProcessedStats2, outputProcessedStats3 } from './read.js'
 
 async function test1() {
     var data = await getFile('file')
@@ -6,7 +6,7 @@ async function test1() {
 }
 
 async function test2() {
-    const data = await outputProcessedStats2()
+    const data = await outputProcessedStats3(process.argv[2])
     console.log(data)
 }
 

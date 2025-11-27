@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Atom } from 'react-loading-indicators'
+import Loader from './Loader'
 import './App.css';
 
 export default function Table4() {
@@ -23,8 +23,8 @@ export default function Table4() {
         <div className="card-header">
           <h5 className="mb-0"><i className="fas fa-list me-2"></i>Detailed Statistics</h5>
         </div>
-        <div className="card-body" style={{width: '100%'}}>
-          <Atom color="#32cd32" size="medium" text="" textColor="" />
+        <div className="card-body" style={{ width: '100%' }}>
+          <Loader />
         </div>
       </div>
     )

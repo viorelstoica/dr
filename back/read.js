@@ -3,6 +3,8 @@ import * as readline from 'readline'
 import { setDefaultHighWaterMark } from 'stream'
 import * as xml2json from 'xml2json'
 
+const logsPath = '../data/logs'
+
 export function getFile(file) {
   return new Promise((resolve) => {
     fs.readFile('../data/tti/batch/20251022_161103_070_45_msgin_BatchCsdThirdPartyInsider_00c9a029-19d9-40f0-9a75-dce4c905c8e0.xml', 'utf8', function (err, data) {
@@ -76,7 +78,7 @@ export async function outputProcessedStats2() {
 }
 
 function scanCmdSucErr(fo, fi) {
-  const fileName = `../data/static/output_processed/${fo}/${fi}`
+  const fileName = `${fo}/${fi}`
   return new Promise((resolve) => {
     var ret = []
     var currRet
@@ -103,7 +105,29 @@ function scanCmdSucErr(fo, fi) {
   })
 }
 
-
+export async function outputProcessedStats3(date) {
+  const promises = []
+  const fo = `${logsPath}/${date}/output_processed`
+  var files = fs.readdirSync(fo)
+  files.forEach(fi => {
+    promises.push(scanCmdSucErr(fo, fi))
+  })
+  const ret = await Promise.all(promises)
+  var ret2 = []
+  ret.forEach(p => {
+    p.forEach(r => {
+      var elm = ret2.find(v => v.cmd === r.cmd)
+      if (elm != undefined) {
+        elm.suc = elm.suc + r.suc
+        elm.err = elm.err + r.err
+      }
+      else {
+        ret2.push(r)
+      }
+    })
+  })
+  return ret2
+}
 
 function onP(m, tm) {
   return new Promise((resolve) => {
