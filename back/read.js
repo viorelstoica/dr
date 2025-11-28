@@ -159,3 +159,30 @@ export async function o() {
 }
 
 
+// TTI stuff
+
+
+export async function ttiStats(date) {
+  var ret = []
+  var folders = fs.readdirSync(`../data/logs/${date}/trace`)
+  folders.forEach(async (fo) => {
+    var files = fs.readdirSync(`../data/logs/${date}/trace/${fo}`)
+    files.forEach(fi => {
+      const tokens = fi.split('_')
+      ret.push({date: tokens[0], time: tokens[1], millis: tokens[2], thread: tokens[3], type: tokens[4], flow: tokens[5], uuid: tokens[6]})
+    })
+  })
+  var ret2 = []
+  ret.forEach(r=>{
+     var elm = ret2.find(v => v.type === r.type)
+      if (elm != undefined) {
+        elm.count = elm.count + 1
+      }
+      else {
+        ret2.push({type: r.type, count: 1})
+      }
+
+  })
+  return ret2
+}
+

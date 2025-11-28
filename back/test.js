@@ -1,7 +1,12 @@
-import { getFile, o, outputProcessedStats, outputProcessedStats2, outputProcessedStats3 } from './read.js'
+import { getFile, o, outputProcessedStats, outputProcessedStats2, outputProcessedStats3, ttiStats } from './read.js'
+
+async function test0() {
+    var data = await getFile('file')
+    console.log(data)
+}
 
 async function test1() {
-    var data = await getFile('file')
+    const data = await outputProcessedStats()
     console.log(data)
 }
 
@@ -11,8 +16,8 @@ async function test2() {
 }
 
 async function test3() {
-    const ret = await o()
+    const ret = await ttiStats('2025-11-25')
     console.log(ret)
 }
 
-test2()
+test3()
